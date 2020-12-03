@@ -1,0 +1,9 @@
+' Placeholder
+
+function getData() as object
+  return {
+    input: [],
+    verbose: false,
+    argument: invalid
+  }
+end function

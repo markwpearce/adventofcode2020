@@ -4,7 +4,8 @@
   "description": "Advent Of Code 2020 - Done in Brightscript",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "./node_modules/.bin/bsc --create-package=false",
+    "file": "npm run build && ./scripts/run-brs-file.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/markwpearce/adventofcode2020#readme",
   "dependencies": {
     "brighterscript": "^0.22.0",
-    "brs": "^0.39.0"
+    "brs": "^0.39.0",
+    "commander": "^6.2.0"
   }
 }

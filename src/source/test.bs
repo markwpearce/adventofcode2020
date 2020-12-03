@@ -1,0 +1,5 @@
+sub Main()
+  data = getData()
+  ?"Data: ";data
+  ?"Input: "; data.input.join(", ")
+end sub
