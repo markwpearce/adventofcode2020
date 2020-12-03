@@ -89,7 +89,7 @@ end function`;
 
 
 function runPuzzle(hasInput) {
-  const brsCommandLine = `./node_modules/.bin/brs ${hasInput ? "./dist/source/input.brs" : ""} ./dist/source/${program.puzzle}.brs`
+  const brsCommandLine = `./node_modules/.bin/brs ${hasInput ? "./dist/source/input.brs" : ""} ./dist/source/utils.brs ./dist/source/${program.puzzle}.brs`
   const startTime = startTiming();
   try {
     require('child_process').execSync(

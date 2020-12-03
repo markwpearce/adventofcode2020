@@ -1,0 +1,9 @@
+
+function stringArrayToIntegers(stringArr) as object
+  i = 0
+  numbers = []
+  for each item in stringArr
+    numbers.push(val(item, 10))
+  end for
+  return numbers
+end function

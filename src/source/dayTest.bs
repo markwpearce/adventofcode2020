@@ -1,0 +1,4 @@
+
+data = getData()
+?"Data: ";data
+?"Input: "; data.input.join(", ")

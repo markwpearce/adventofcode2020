@@ -1,0 +1,3 @@
+data = getData()
+numbers = stringArrayToIntegers(data.input)
+?numbers
