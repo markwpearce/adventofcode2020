@@ -1,0 +1,28 @@
+{
+  "name": "adventofcode2020",
+  "version": "0.0.1",
+  "description": "Advent Of Code 2020 - Done in Brightscript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markwpearce/adventofcode2020.git"
+  },
+  "keywords": [
+    "brightscript",
+    "roku",
+    "adventofcode"
+  ],
+  "author": "Mark Pearce",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/markwpearce/adventofcode2020/issues"
+  },
+  "homepage": "https://github.com/markwpearce/adventofcode2020#readme",
+  "dependencies": {
+    "brighterscript": "^0.22.0",
+    "brs": "^0.39.0"
+  }
+}
