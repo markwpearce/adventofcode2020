@@ -1,0 +1,29 @@
+data = getData()
+numbers = stringArrayToIntegers(data.input)
+
+function getProductOfTrioToSum(numbers, targetSum)
+  numCount = numbers.Count()
+
+  for i = 0 to numCount - 1
+    num1 = numbers[i]
+    for j = i + 1 to numCount - 1
+      num2 = numbers[j]
+      for k = j + 1 to numCount - 1
+        num3 = numbers[k]
+        sum = (num1 + num2 + num3)
+        if sum = targetSum
+          vlog(["Trio sums to", targetSum, "is", num1, num2, num3])
+          return (num1 * num2 * num3)
+        end if
+      end for
+    end for
+  end for
+
+  return invalid
+end function
+
+product = getProductOfTrioToSum(numbers, 2020)
+
+if invalid <> product
+  ?product
+end if

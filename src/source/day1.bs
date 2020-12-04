@@ -1,3 +1,27 @@
 data = getData()
 numbers = stringArrayToIntegers(data.input)
-?numbers
+
+function getProductOfPairToSum(numbers, targetSum)
+  numCount = numbers.Count()
+
+  for i = 0 to numCount - 1
+    num = numbers[i]
+    for j = i + 1 to numCount - 1
+      otherNum = numbers[j]
+      sum = (num + otherNum)
+      if sum = targetSum
+        vlog(["Pair sums to", targetSum, "is", num, othernum])
+        return (num * otherNum)
+      end if
+    end for
+
+  end for
+
+  return invalid
+end function
+
+product = getProductOfPairToSum(numbers, 2020)
+
+if invalid <> product
+  ?product
+end if

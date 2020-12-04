@@ -1,4 +1,3 @@
-
 function stringArrayToIntegers(stringArr) as object
   i = 0
   numbers = []
@@ -6,4 +5,78 @@ function stringArrayToIntegers(stringArr) as object
     numbers.push(val(item, 10))
   end for
   return numbers
+end function
+
+
+sub getLogString(messageArr as dynamic) as string
+  strings = []
+  if "roAssociativeArray" = type(messageArr)
+    strings.push("{")
+    for each item in messageArr
+      strings.push(item + ":")
+      if "roAssociativeArray" = type(messageArr[item])
+        strings.push(getLogString(messageArr[item]))
+      else if "roArray" = type(messageArr[item])
+        strings.push("[")
+        strings.push(getLogString(messageArr[item]))
+        strings.push("]")
+      else
+        strings.push(messageArr[item].toStr())
+      end if
+    end for
+    strings.push("}")
+  else
+    for each item in messageArr
+      if "roAssociativeArray" = type(item)
+        strings.push(getLogString(item))
+      else if "roArray" = type(item)
+        strings.push("[")
+        strings.push(getLogString(item))
+        strings.push("]")
+      else
+        strings.push(item.toStr())
+      end if
+    end for
+  end if
+  return strings.join(" ")
+end sub
+
+sub vlog(messageArr)
+  if invalid = m.verbose
+    data = getData()
+    m.verbose = data.verbose
+  end if
+  if invalid <> m.verbose and m.verbose
+    ? getLogString(messageArr)
+  end if
+end sub
+
+
+function getPasswordDetails(inputLines) as object
+  passwordDetails = []
+  for each line in inputLines
+    ' Each line looks like
+    '   1-3 a: abcde
+    '   <min>-<max> <char>: <password>
+    rulePassword = line.split(":")
+    if rulePassword.count() <> 2
+      ?"Error could not split line: ";line
+      return invalid
+    end if
+    rule = rulePassword[0]
+    password = rulePassword[1]
+    sizesChar = rule.split(" ")
+    ruleChar = sizesChar[1]
+    minMax = sizesChar[0].split("-")
+    ruleMin = minMax[0]
+    ruleMax = minMax[1]
+    passwordDetails.push({
+      char: ruleChar.trim(),
+      password: password.trim(),
+      min: ruleMin.toInt()
+      max: ruleMax.toInt()
+    })
+  end for
+
+  return passwordDetails
 end function

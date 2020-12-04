@@ -1,0 +1,30 @@
+data = getData()
+
+
+function isPasswordValid1(passwordDetails as object) as boolean
+  count = 0
+  i = 0
+  for i = 0 to passwordDetails.password.len() - 1
+    charAtI = passwordDetails.password.mid(i, 1)
+    if charAtI = passwordDetails.char
+      count++
+    end if
+  end for
+  valid = count >= passwordDetails.min and count <= passwordDetails.max
+  if not valid
+    vlog(["invalid password: ", passwordDetails.password])
+  end if
+  return valid
+end function
+
+passwordDetails = getPasswordDetails(data.input)
+validCount = 0
+
+for each details in passwordDetails
+  vlog(["Checking", details, "..."])
+  if isPasswordValid1(details)
+    validCount++
+  end if
+end for
+
+?validCount
