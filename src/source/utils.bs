@@ -8,35 +8,29 @@ function stringArrayToIntegers(stringArr) as object
 end function
 
 
-sub getLogString(messageArr as dynamic) as string
+sub getLogString(messageArr as dynamic, deep = false) as string
   strings = []
   if "roAssociativeArray" = type(messageArr)
     strings.push("{")
     for each item in messageArr
       strings.push(item + ":")
-      if "roAssociativeArray" = type(messageArr[item])
-        strings.push(getLogString(messageArr[item]))
-      else if "roArray" = type(messageArr[item])
-        strings.push("[")
-        strings.push(getLogString(messageArr[item]))
-        strings.push("]")
-      else
-        strings.push(messageArr[item].toStr())
-      end if
+      strings.push(getLogString(messageArr[item], true))
     end for
     strings.push("}")
-  else
+  else if "roArray" = type(messageArr)
+    if deep
+      strings.push("[")
+    end if
     for each item in messageArr
-      if "roAssociativeArray" = type(item)
-        strings.push(getLogString(item))
-      else if "roArray" = type(item)
-        strings.push("[")
-        strings.push(getLogString(item))
-        strings.push("]")
-      else
-        strings.push(item.toStr())
-      end if
+      strings.push(getLogString(item, true))
     end for
+    if deep
+      strings.push("]")
+    end if
+  else if invalid <> messageArr.toStr
+    return messageArr.toStr()
+  else
+    ? "Log error"; messageArr
   end if
   return strings.join(" ")
 end sub

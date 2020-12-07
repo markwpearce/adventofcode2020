@@ -52,10 +52,7 @@ function endTiming(hrStart) {
 }
 
 function parseInput(line) {
-  if (line.trim() === "") {
-    // ignore whitespace lines
-    return;
-  }
+  line = line.trim()
   currentLineNumber++;
   try {
     vlog(line);
