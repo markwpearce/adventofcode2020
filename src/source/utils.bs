@@ -94,3 +94,95 @@ function countTrees(lines, horiz as integer, vert = 1 as integer, open = "."as s
   end for
   return treeCount
 end function
+
+
+
+function freshPassportKeyCounter(passportKeys) as object
+  keyCounter = {}
+  for each key in passportKeys
+    keyCounter.addReplace(key, false)
+  end for
+  return keyCounter
+end function
+
+function isValidPassport(keyCounter, passportKeys) as boolean
+  valid = true
+  vlog(["Checking passport", keyCounter])
+  for each key in passportKeys
+    valid = valid and true = keyCounter[key]
+  end for
+  vlog(["Valid? ", valid])
+  return valid
+end function
+
+
+function countValidPassports(lines, passportKeys) as integer
+  validPassports = 0
+  keyCounter = freshPassportKeyCounter(passportKeys)
+  for each line in lines
+    vlog(["testing line", line])
+    if line = ""
+      vlog("New passport")
+      if isValidPassport(keyCounter, passportKeys)
+        validPassports++
+      end if
+      keyCounter = freshPassportKeyCounter(passportKeys)
+    else
+      lineSections = line.split(" ")
+
+      for each section in lineSections
+        keyValue = section.split(":")
+        if 2 <> keyValue.count()
+          vlog(["Error - can not find passport details", section, "of", line])
+          return -1
+        end if
+        key = keyValue[0]
+        passportValidFunc = passportKeys[key]
+        if invalid <> passportValidFunc
+          valid = passportValidFunc(keyValue[1])
+          vlog([section, "is valid?", valid])
+
+          keyCounter[key] = valid
+        end if
+
+      end for
+    end if
+  end for
+  'Test final passport
+  if isValidPassport(keyCounter, passportKeys)
+    validPassports++
+  end if
+  return validPassports
+end function
+
+
+function isNumBetween(value as dynamic, min as float, max as float) as boolean
+  if type(value) = "String"
+    value = value.toFloat()
+  end if
+  if invalid = value
+    return false
+  end if
+  if value < min or value > max
+    return false
+  end if
+  return true
+end function
+
+function isHexColor(value as string) as boolean
+  if value.len() <> 7 or value.mid(0, 1) <> "#"
+    return false
+  end if
+  rest = val(value.mid(1), 16)
+  return invalid <> rest
+end function
+
+function isOneOf(value as dynamic, options as object) as boolean
+  for each option in options
+    if value = option
+      return true
+    end if
+  end for
+  return false
+end function
+

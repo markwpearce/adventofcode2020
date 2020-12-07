@@ -1,0 +1,46 @@
+data = getData()
+
+passportKeys = {
+  byr: function(value)
+    return isNumBetween(value, 1920, 2002)
+
+  end function,
+
+  iyr: function(value)
+    return isNumBetween(value, 2010, 2020)
+  end function,
+
+  eyr: function(value)
+    return isNumBetween(value, 2020, 2030)
+  end function,
+
+  hgt: function(value)
+    unit = value.right(2)
+    measure = value.left(value.len() - 2).toFloat()
+    vlog(["height", value, " -> ", measure, unit])
+    if unit = "cm" or unit = "in"
+      if unit = "cm"
+        return isNumBetween(measure, 150, 193)
+      else if unit = "in"
+        return isNumBetween(measure, 59, 76)
+      end if
+    end if
+    return false
+  end function,
+
+  hcl: function(value)
+    return isHexColor(value)
+  end function,
+  ecl: function(value)
+    return isOneOf(value, ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"])
+  end function,
+  pid: function(value)
+    if value.len() <> 9
+      return false
+    end if
+    return invalid <> value.toInt()
+  end function
+}
+
+
+?countValidPassports(data.input, passportKeys)

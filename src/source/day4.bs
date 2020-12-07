@@ -1,52 +1,29 @@
 data = getData()
 
-passportKeys = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
+passportKeys = {
+  byr: function(value)
+    return true
+  end function,
+  iyr: function(value)
+    return true
+  end function,
+  eyr: function(value)
+    return true
+  end function,
+  hgt: function(value)
+    return true
+  end function,
+  hcl: function(value)
+    return true
+  end function,
+  ecl: function(value)
+    return true
+  end function,
+  pid: function(value)
+    return true
+  end function
+}
 
-
-function freshKeyCounter(passportKeys) as object
-  keyCounter = {}
-  for each key in passportKeys
-    keyCounter.addReplace(key, 0)
-  end for
-  return keyCounter
-end function
-
-function isValidPassport(keyCounter, passportKeys) as boolean
-  valid = true
-  vlog(["Checking passport", keyCounter])
-  for each key in passportKeys
-    valid = valid and keyCounter[key] = 1
-  end for
-  vlog(["Valid? ", valid])
-  return valid
-end function
-
-
-function countValidPassports(lines, passportKeys) as integer
-  validPassports = 0
-  keyCounter = freshKeyCounter(passportKeys)
-  for each line in lines
-    vlog(["testing line", line])
-    if line = ""
-      vlog("New passport")
-      if isValidPassport(keyCounter, passportKeys)
-        validPassports++
-      end if
-      keyCounter = freshKeyCounter(passportKeys)
-    else
-      for each key in passportKeys
-        if line.instr(key + ":") <> -1
-          keyCounter[key] = 1
-        end if
-      end for
-    end if
-  end for
-  'Test final passport
-  if isValidPassport(keyCounter, passportKeys)
-    validPassports++
-  end if
-  return validPassports
-end function
 
 
 ?countValidPassports(data.input, passportKeys)
