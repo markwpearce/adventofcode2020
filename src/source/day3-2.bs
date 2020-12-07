@@ -1,0 +1,12 @@
+data = getData()
+
+
+
+
+trees1_1 = countTrees(data.input, 1)
+trees3_1 = countTrees(data.input, 3)
+trees5_1 = countTrees(data.input, 5)
+trees7_1 = countTrees(data.input, 7)
+trees1_2 = countTrees(data.input, 1, 2)
+
+? trees1_1 * trees3_1 * trees5_1 * trees7_1 * trees1_2

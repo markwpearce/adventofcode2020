@@ -1,0 +1,6 @@
+data = getData()
+
+
+
+
+?countTrees(data.input, 3)
