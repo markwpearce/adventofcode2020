@@ -1,0 +1,38 @@
+data = getData()
+
+
+
+function checkQuestionTickList(tickList) as integer
+  count = 0
+  for each key in tickList
+    if tickList[key] = 1
+      count++
+    end if
+  end for
+  return count
+end function
+
+
+function checkPassportData1(lines) as integer
+  startLetter = "a"
+  numPossibleQuestions = 26
+  tickList = getQuestionTickList(startLetter, numPossibleQuestions)
+  sum = 0
+  for each line in lines
+    if "" = line
+      yeses = checkQuestionTickList(tickList)
+      vlog([ticklist, yeses])
+      sum += yeses
+      tickList = getQuestionTickList(startLetter, numPossibleQuestions)
+    else
+      qs = line.split("")
+      for each q in qs
+        tickList[q] = 1
+      end for
+    end if
+  end for
+  sum += checkQuestionTickList(tickList)
+  return sum
+end function
+
+?checkPassportData1(data.input)

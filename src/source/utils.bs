@@ -213,3 +213,12 @@ function getSeatId(input as string) as integer
   vlog([input, "->", row, col, "->", id])
   return id
 end function
+
+function getQuestionTickList(startLetter as string, numPossibleQuestions as integer) as object
+  tickList = {}
+  for i = 0 to numPossibleQuestions
+    tickList.addReplace(chr(asc(startLetter) + i), 0)
+  end for
+  return tickList
+end function
+
