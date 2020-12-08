@@ -1,0 +1,13 @@
+data = getData()
+
+highest = 0
+
+for each line in data.input
+  id = getSeatId(line)
+  if id > highest
+    highest = id
+  end if
+end for
+
+vlog(["Highest", highest])
+? highest

@@ -186,3 +186,30 @@ function isOneOf(value as dynamic, options as object) as boolean
   return false
 end function
 
+
+
+function fromBinaryString(binString as string, oneStr = "1" as string, zeroStr = "0" as string) as integer
+  chars = binString.split("")
+  for i = 0 to chars.count() - 1
+    if chars[i] = oneStr
+      chars[i] = "1"
+    else if chars[i] = zeroStr
+      chars[i] = "0"
+    else
+      ? "Error - unable to convert from binary ";binString;" with 0=";zeroStr;" and 1=";oneStr
+    end if
+  end for
+  return Val(chars.join(""), 2)
+end function
+
+
+function getSeatId(input as string) as integer
+  rowStr = input.left(7)
+  colStr = input.right(3)
+
+  row = fromBinaryString(rowStr, "B", "F")
+  col = fromBinaryString(colStr, "R", "L")
+  id = row * 8 + col
+  vlog([input, "->", row, col, "->", id])
+  return id
+end function

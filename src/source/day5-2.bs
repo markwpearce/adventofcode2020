@@ -1,0 +1,21 @@
+data = getData()
+
+allSeats = []
+
+for each line in data.input
+  id% = getSeatId(line)
+  allSeats.push(id%)
+end for
+
+' brs interpreter sort does not work properly for numbers
+allSeats.sort()
+vlog(["Sorted seats", allSeats])
+mySeat = -1
+for i = 0 to allSeats.count() - 2
+  if allSeats[i + 1] - allSeats[i] > 1
+    mySeat = allSeats[i] + 1
+    exit for
+  end if
+end for
+
+?mySeat
