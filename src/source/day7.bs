@@ -1,12 +1,6 @@
 data = getData()
 
-LuggageTable = {}
-
-
-parseBagInput(luggageTable, data.input)
-vlog(luggageTable[data.argument])
-
-function walkNode1(node as object, depth = 0) as object
+function bagsThatContain(node as object, depth = 0) as object
   parentColors = []
   spaces = ""
   for i = 0 to depth
@@ -15,7 +9,7 @@ function walkNode1(node as object, depth = 0) as object
   vlog(spaces + node.name)
   for each parent in node.parents
     parentColors.push(parent.name)
-    subParents = walkNode1(parent, depth + 1)
+    subParents = bagsThatContain(parent, depth + 1)
     parentColors.append(subParents)
   end for
   parentColors.sort()
@@ -23,6 +17,19 @@ function walkNode1(node as object, depth = 0) as object
 end function
 
 
-allTops = walkNode1(luggageTable[data.argument])
+
+LuggageTable = {}
+
+
+parseBagInput(luggageTable, data.input)
+
+searchColor = "shiny gold"
+
+if invalid <> data.argument and "" <> data.argument
+  searchColor = data.argument
+end if
+vlog(luggageTable[searchColor])
+
+allTops = bagsThatContain(luggageTable[searchColor])
 vlog([allTops])
 ?allTops.count()

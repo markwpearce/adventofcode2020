@@ -4,7 +4,6 @@ LuggageTable = {}
 
 
 parseBagInput(luggageTable, data.input)
-vlog(luggageTable[data.argument])
 
 function numberOfBagsInside(node as object, depth = 0, n = 0) as integer
   holding = 0
@@ -22,6 +21,13 @@ function numberOfBagsInside(node as object, depth = 0, n = 0) as integer
   return holding
 end function
 
+searchColor = "shiny gold"
 
-allHolding = numberOfBagsInside(luggageTable[data.argument])
+if invalid <> data.argument and "" <> data.argument
+  searchColor = data.argument
+end if
+vlog(luggageTable[searchColor])
+
+
+allHolding = numberOfBagsInside(luggageTable[searchColor])
 ?allHolding
