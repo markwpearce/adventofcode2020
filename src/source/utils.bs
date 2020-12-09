@@ -10,25 +10,37 @@ end function
 
 sub getLogString(messageArr as dynamic, deep = false) as string
   strings = []
-  if "roAssociativeArray" = type(messageArr)
+  if invalid <> messageArr.toStr
+    return messageArr.toStr()
+  else if "roAssociativeArray" = type(messageArr)
     strings.push("{")
+    i = 0
     for each item in messageArr
       strings.push(item + ":")
-      strings.push(getLogString(messageArr[item], true))
+      value = getLogString(messageArr[item], true)
+      if i < messageArr.count() - 1
+        value += ","
+      end if
+      strings.push(value)
+      i++
     end for
     strings.push("}")
   else if "roArray" = type(messageArr)
     if deep
       strings.push("[")
     end if
+    i = 0
     for each item in messageArr
-      strings.push(getLogString(item, true))
+      value = getLogString(getLogString(item, true))
+      if i < messageArr.count() - 1 and deep
+        value += ","
+      end if
+      strings.push(value)
+      i++
     end for
     if deep
       strings.push("]")
     end if
-  else if invalid <> messageArr.toStr
-    return messageArr.toStr()
   else
     ? "Log error"; messageArr
   end if
@@ -222,3 +234,22 @@ function getQuestionTickList(startLetter as string, numPossibleQuestions as inte
   return tickList
 end function
 
+
+
+function removeDuplicatesInSortedArray(arr) as object
+  arrLength = arr.count()
+  keepGoing = true
+  while keepGoing
+    keepGoing = false
+    arrLength = arr.count()
+
+    for i = 0 to arrLength - 2
+      if arr[i] = arr[i + 1]
+        arr.delete(i)
+        keepGoing = true
+        arrLength--
+      end if
+    end for
+  end while
+  return arr
+end function

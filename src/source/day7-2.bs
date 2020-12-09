@@ -1,0 +1,27 @@
+data = getData()
+
+LuggageTable = {}
+
+
+parseBagInput(luggageTable, data.input)
+vlog(luggageTable[data.argument])
+
+function numberOfBagsInside(node as object, depth = 0, n = 0) as integer
+  holding = 0
+  spaces = ""
+  for i = 0 to depth
+    spaces += "  "
+  end for
+  for each child in node.children
+    bagHolds = numberOfBagsInside(child.node, depth + 1, child.number)
+    holding += child.number * (bagHolds + 1)
+
+  end for
+  vlog([spaces, node.name, "(" + n.toStr() + ")", holding])
+
+  return holding
+end function
+
+
+allHolding = numberOfBagsInside(luggageTable[data.argument])
+?allHolding

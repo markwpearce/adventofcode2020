@@ -86,7 +86,19 @@ end function`;
 
 
 function runPuzzle(hasInput) {
-  const brsCommandLine = `./node_modules/.bin/brs ${hasInput ? "./dist/source/input.brs" : ""} ./dist/source/utils.brs ./dist/source/${program.puzzle}.brs`
+
+  const files = ["./dist/source/bslib.brs", "./dist/source/utils.brs"]
+  if (hasInput) {
+    files.push("./dist/source/input.brs")
+  }
+  const dayPrefix = program.puzzle.split("-")[0]
+  const dayUtilFile = `./dist/source/${dayPrefix}.util.brs`
+  if (fs.existsSync(dayUtilFile)) {
+    files.push(dayUtilFile)
+  }
+  files.push(`./dist/source/${program.puzzle}.brs`)
+
+  const brsCommandLine = `./node_modules/.bin/brs ` + files.join(" ");
   const startTime = startTiming();
   try {
     require('child_process').execSync(

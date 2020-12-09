@@ -1,0 +1,97 @@
+
+class LuggageNode
+
+  name as string
+  children = []
+  parents = []
+
+  sub new(name as string)
+    m.name = name
+  end sub
+
+  sub addChild(node as object, number as integer)
+    node.parents.push(m)
+    m.children.push({node: node, number: number})
+  end sub
+
+
+  function toStr() as string
+    childrenStr = "["
+    i = 0
+    for each child in m.children
+      childrenStr += child.node.name + "(" + child.number.toStr() + ")"
+      if i < m.children.count() - 1
+        childrenStr += ", "
+      end if
+      i++
+    end for
+    childrenStr += "]"
+    parentStr = "["
+    i = 0
+    for each parent in m.parents
+      parentStr += parent.name
+      if i < m.parents.count() - 1
+        parentStr += ", "
+      end if
+      i++
+    end for
+    parentStr += "]"
+    return `LuggageNode <name: ${m.name}, children: ${childrenStr} parents: ${parentStr}>`
+  end function
+end class
+
+
+function getBagNode(luggageTable as object, bagColor as string) as object
+  bagNode = luggageTable[bagColor]
+  if invalid = bagNode
+    bagNode = new LuggageNode(bagColor)
+    luggageTable.addReplace(bagColor, bagNode)
+  end if
+  return bagNode
+end function
+
+function parseBagInbag(bagInBag as string) as object
+  ' number adjective color bag(s)
+
+  parts = bagInBag.split(" ")
+  if parts.count() < 3
+    ?"Error - can't parse bag in bag: "; bagInBag
+    return
+  end if
+  num = parts[0].toInt()
+  color = parts[1] + " " + parts[2]
+  return {color: color, number: num}
+end function
+
+
+sub parseBag(luggageTable as object, line as string)
+  line = line.left(line.len() - 1) ' remove period
+  containsPlace = line.inStr(" bags contain ")
+
+
+
+  bagColor = line.left(containsPlace).trim()
+  contents = line.mid(containsPlace + 13).trim()
+
+  vlog([line, [bagColor, contents]])
+
+  bagNode = getBagNode(luggageTable, bagColor)
+
+  if contents.left(2) = "no"
+    return ' no other bags
+  end if
+
+  bagsInBag = contents.split(",")
+
+  for each bag in bagsInBag
+    bagDeets = parseBagInbag(bag.trim())
+    insideBag = getBagNode(luggageTable, bagDeets.color)
+    bagNode.addChild(insideBag, bagDeets.number)
+  end for
+end sub
+
+sub parseBagInput(luggageTable, input)
+  for each line in input
+    parseBag(luggageTable, line)
+  end for
+end sub

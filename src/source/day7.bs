@@ -1,0 +1,28 @@
+data = getData()
+
+LuggageTable = {}
+
+
+parseBagInput(luggageTable, data.input)
+vlog(luggageTable[data.argument])
+
+function walkNode1(node as object, depth = 0) as object
+  parentColors = []
+  spaces = ""
+  for i = 0 to depth
+    spaces += "  "
+  end for
+  vlog(spaces + node.name)
+  for each parent in node.parents
+    parentColors.push(parent.name)
+    subParents = walkNode1(parent, depth + 1)
+    parentColors.append(subParents)
+  end for
+  parentColors.sort()
+  return removeDuplicatesInSortedArray(parentColors)
+end function
+
+
+allTops = walkNode1(luggageTable[data.argument])
+vlog([allTops])
+?allTops.count()
