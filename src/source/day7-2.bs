@@ -1,9 +1,5 @@
 data = getData()
 
-LuggageTable = {}
-
-
-parseBagInput(luggageTable, data.input)
 
 function numberOfBagsInside(node as object, depth = 0, n = 0) as integer
   holding = 0
@@ -20,6 +16,13 @@ function numberOfBagsInside(node as object, depth = 0, n = 0) as integer
 
   return holding
 end function
+
+
+LuggageTable = {}
+
+
+parseBagInput(luggageTable, data.input)
+
 
 searchColor = "shiny gold"
 

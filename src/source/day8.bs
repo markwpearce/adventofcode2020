@@ -1,0 +1,8 @@
+data = getData()
+
+
+
+opList = getAllOps(data.input)
+result = runProgram(opList)
+vlog(opList, true)
+?result.accumulator

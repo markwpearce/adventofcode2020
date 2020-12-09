@@ -8,7 +8,7 @@ function stringArrayToIntegers(stringArr) as object
 end function
 
 
-sub getLogString(messageArr as dynamic, deep = false) as string
+sub getLogString(messageArr as dynamic, deep = false, byLine = false) as string
   strings = []
   if invalid <> messageArr.toStr
     return messageArr.toStr()
@@ -44,16 +44,27 @@ sub getLogString(messageArr as dynamic, deep = false) as string
   else
     ? "Log error"; messageArr
   end if
-  return strings.join(" ")
+  sep = " "
+  if byLine and not deep
+    sep = "|"
+  end if
+  return strings.join(sep)
 end sub
 
-sub vlog(messageArr)
+sub vlog(messageArr, byLine = false)
   if invalid = m.verbose
     data = getData()
     m.verbose = data.verbose
   end if
   if invalid <> m.verbose and m.verbose
-    ? getLogString(messageArr)
+    logStr = getLogString(messageArr, false, byLine)
+    if byLine
+      for each line in logStr.split("|")
+        ?line
+      end for
+    else
+      ? logStr
+    end if
   end if
 end sub
 

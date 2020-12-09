@@ -1,0 +1,90 @@
+class Operation
+
+  name as string
+  originalName as string
+
+  arg as integer = 0
+
+  visits as integer = 0
+  order as integer = -1
+  isExit as boolean = false
+
+  sub new (name as string, arg as integer)
+    m.name = lcase(name)
+
+    m.originalName = m.name
+    m.arg = arg
+  end sub
+
+  function op(ord as integer) as object
+    m.visits++
+    m.order = ord
+    if "nop" = m.name
+      return {acc: 0, jmp: 1}
+    end if
+    if "acc" = m.name
+      return {acc: m.arg, jmp: 1}
+    end if
+    if "jmp" = m.name
+      return {acc: 0, jmp: m.arg}
+    end if
+    ? "Error - unknown arg: ";m.name
+    return {}
+  end function
+
+  sub reset()
+    m.isExit = false
+    m.visits = 0
+    m.name = m.originalName
+    m.order = -1
+  end sub
+
+  function toStr() as string
+    isExit = "false"
+    if m.isExit
+      isExit = "true"
+    end if
+    return `Operation <name: ${m.name}, arg: ${m.arg}, visits: ${m.visits}>, order: ${m.order}, isExit: ${isExit}>`
+  end function
+end class
+
+
+function lineToOp(line as string)
+  parts = line.split(" ")
+  vlog([line, "->", parts])
+  op = new Operation(parts[0], parts[1].toInt())
+  return op
+end function
+
+
+function getAllOps(lines)
+  ops = []
+  for each line in lines
+    vlog(line)
+    ops.push(lineToOp(line))
+  end for
+  return ops
+end function
+
+
+function runProgram(opList) as object
+  accumulator = 0
+  looped = false
+  i = 1
+  nextOpIndex = 0
+  op = opList[nextOpIndex]
+  while invalid <> op
+    if op.visits > 0
+      vlog(["Exit op num", nextOpIndex])
+      op.isExit = true
+      looped = true
+      exit while
+    end if
+    result = op.op(i)
+    accumulator += result.acc
+    nextOpIndex += result.jmp
+    op = opList[nextOpIndex]
+    i++
+  end while
+  return {accumulator: accumulator, looped: looped}
+end function
