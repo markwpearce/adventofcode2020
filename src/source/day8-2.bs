@@ -1,65 +1,11 @@
 data = getData()
 
 
-function getPotentialErrors(opList) as object
-  i = 1
-  nextOpIndex = 0
-  opOrder = []
-  op = opList[nextOpIndex]
-  while invalid <> op
-    if op.visits > 0
-      vlog(["Exit op num", nextOpIndex])
-      op.isExit = true
-      exit while
-    end if
-
-
-    result = op.op(i)
-    nextOpIndex += result.jmp
-    op = opList[nextOpIndex]
-    if invalid <> op and ("jmp" = op.name or "nop" = op.name)
-      opOrder.push(nextOpIndex)
-    end if
-    i++
-  end while
-  return opOrder
-end function
-
-
 opList = getAllOps(data.input)
-potentialErrorsIndexes = getPotentialErrors(opList)
 correct = invalid
-vlog(["potentialErrorsIndexes", potentialErrorsIndexes])
-
-' for i = potentialErrorsIndexes.count() - 1 to 0 step -1
-'   potErrorIdx = potentialErrorsIndexes[i]
-'   vlog(["Switching op", potErrorIdx])
-
-'   potErrorOp = opList[potErrorIdx]
-'   vlog(potErrorOp)
-'   if "jmp" = potErrorOp.name
-'     potErrorOp.name = "nop"
-'   else if "nop" = potErrorOp.name
-'     potErrorOp.name = "jmp"
-'   end if
-'   vlog(potErrorOp)
-'   exit for
-'   result = runProgram(opList)
-'   vlog(result)
-'   if not result.looped
-'     vlog(["Found problem opNum", potErrorIdx])
-'     correct = result.accumulator
-'     exit for
-'   end if
-
-'   for each op in opList
-'     op.reset()
-'   end for
-
-' end for
 
 for i = opList.count() - 1 to 0 step -1
-  potErrorIdx = i 'potentialErrorsIndexes[i]
+  potErrorIdx = i
   vlog(["Switching op", potErrorIdx])
 
   potErrorOp = opList[potErrorIdx]
