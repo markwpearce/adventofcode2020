@@ -1,0 +1,57 @@
+
+function checkListForSum(array, lastIndex as integer, lookSize as integer, target as integer) as boolean
+  startIndex = lastIndex - lookSize
+  found = false
+  for i = startIndex to lastIndex - 1
+    a = array[i]
+    for j = i + 1 to lastIndex
+      b = array[j]
+
+      if a + b = target
+        vlog([a, "+", b, "=", target])
+        found = true
+        exit for
+      end if
+    end for
+    if found
+      exit for
+    end if
+  end for
+  return found
+end function
+
+
+function findInvalidNumber(numbers, lookSize) as integer
+  result = invaliid
+  for i = lookSize to numbers.count() - 1
+    target = numbers[i]
+    vlog([i, "Checking last", lookSize, "for pairs that sum to", target])
+    if not checkListForSum(numbers, i, lookSize, target)
+
+      result = numbers[i]
+      vlog(["Found invalid number", result])
+      exit for
+    end if
+  end for
+  return result
+end function
+
+
+function findSubArrayThatSumsToNum(numbers, target as integer) as object
+  result = invalid
+  for i = 0 to numbers.count() - 1
+    checkSum = 0
+    j = i
+    result = []
+    while checkSum < target and j < numbers.count()
+      result.push(numbers[j])
+      checkSum += numbers[j]
+      j++
+    end while
+    if target = checkSum
+      exit for
+    end if
+    result = invalid
+  end for
+  return result
+end function

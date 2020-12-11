@@ -2,7 +2,7 @@ function stringArrayToIntegers(stringArr) as object
   i = 0
   numbers = []
   for each item in stringArr
-    numbers.push(val(item, 10))
+    numbers.push(item.toInt())
   end for
   return numbers
 end function
@@ -263,4 +263,51 @@ function removeDuplicatesInSortedArray(arr) as object
     end for
   end while
   return arr
+end function
+
+
+function arrayMinimum(numbers)
+  if numbers.count() = 0
+    return invalid
+  end if
+  min = numbers[0]
+  for each num in numbers
+    if num < min
+      min = num
+    end if
+  end for
+  return min
+end function
+
+
+function arrayMaximum(numbers)
+  if numbers.count() = 0
+    return invalid
+  end if
+  max = numbers[0]
+  for each num in numbers
+    if num > max
+      max = num
+    end if
+  end for
+  return max
+end function
+
+function sortArrayOfInts(lines)
+
+  for i = 0 to lines.count() - 1
+    line = lines[i]
+    if not type(line) = "String"
+      line = line.toStr()
+    end if
+    while line.len() < 5
+      line = "0" + line
+    end while
+    lines[i] = line
+  end for
+
+  lines.sort()
+
+  return stringArrayToIntegers(lines)
+
 end function

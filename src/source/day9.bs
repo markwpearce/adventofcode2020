@@ -1,0 +1,14 @@
+data = getData()
+
+numbers = stringArrayToIntegers(data.input)
+vlog(numbers)
+lookSize = 25
+
+if invalid <> data.argument
+  lookSize = data.argument.toInt()
+end if
+
+vlog(["Preamble size:", lookSize])
+
+
+? findInvalidNumber(numbers, lookSize)

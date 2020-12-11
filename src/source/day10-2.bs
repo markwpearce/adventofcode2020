@@ -1,0 +1,54 @@
+data = getData()
+
+numbers = sortArrayOfInts(data.input)
+
+vlog([numbers])
+differences = []
+
+
+function optionsForOnesInARow(currentOnes as integer) as integer
+  options = 1
+  if currentOnes = 0 or currentOnes = 1
+    options = 1
+  else if currentOnes = 2
+    options = 2
+  else if currentOnes = 3
+    options = 4
+  else if currentOnes = 4
+    options = 7
+  else if currentOnes = 5
+    options = 13
+  else if currentOnes = s6
+    options = 22
+  else
+    ?"Error - need to calculate options for currentOnes =";currentOnes
+
+  end if
+  return options
+end function
+
+for i = 0 to numbers.count() - 1
+
+  previousNumber = 0
+  if i > 0
+    previousNumber = numbers[i - 1]
+  end if
+  diff = numbers[i] - previousNumber
+  differences.push(diff)
+end for
+vlog([differences])
+options = 1
+i = 0
+currentOnes = 0
+while i < differences.count()
+  if differences[i] = 1
+    currentOnes++
+  else
+    ' this is a three. How many ways could we rearrange the previous numbers?
+    options *= optionsForOnesInARow(currentOnes)
+    currentOnes = 0
+  end if
+  i++
+end while
+options *= optionsForOnesInARow(currentOnes)
+?options

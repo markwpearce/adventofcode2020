@@ -1,0 +1,22 @@
+data = getData()
+
+numbers = sortArrayOfInts(data.input)
+
+ones = 0
+threes = 1
+for i = 0 to numbers.count() - 1
+
+  previousNumber = 0
+  if i > 0
+    previousNumber = numbers[i - 1]
+  end if
+  diff = numbers[i] - previousNumber
+  if diff = 1
+    ones++
+  else if diff = 3
+    threes++
+  end if
+end for
+
+vlog(["ones=", ones, " and threes=", threes])
+?threes * ones
