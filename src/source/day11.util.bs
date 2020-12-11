@@ -1,0 +1,66 @@
+
+function getSeatingPlan(lines) as object
+  seatingPlan = []
+  for each line in lines
+    seatingPlan.push(line.split(""))
+  end for
+  return seatingPlan
+end function
+
+
+sub vlogSeatingPlan(seatingPlan)
+  for each row in seatingPlan
+    vlog(row)
+  end for
+end sub
+
+
+function isSeat(seatingPlan, row as integer, col as integer) as boolean
+  return seatingPlan[row][col] <> "."
+end function
+
+function isSeatEmpty(seatingPlan, row as integer, col as integer) as boolean
+  return "L" = seatingPlan[row][col]
+end function
+
+function isSeatOccupied(seatingPlan, row as integer, col as integer) as boolean
+  return "#" = seatingPlan[row][col]
+end function
+
+
+
+function getOccupiedSeatsAdjacent(seatingPlan, row as integer, col as integer) as integer
+
+  minRow = row - 1
+  if minRow < 0
+    minRow = 0
+  end if
+
+  minCol = col - 1
+  if minCol < 0
+    minCol = 0
+  end if
+
+  seatingPlanRows = seatingPlan.Count() - 1
+  seatingPlanCols = seatingPlan[0].Count() - 1
+
+  maxRow = row + 1
+  if maxRow > seatingPlanRows
+    maxRow = seatingPlanRows
+  end if
+
+  maxCol = col + 1
+  if maxCol > seatingPlanCols
+    maxCol = seatingPlanCols
+  end if
+
+  occupiedSeats = 0
+  for i = minRow to maxRow
+    for j = minCol to maxCol
+      if (row <> i or col <> j) and isSeatOccupied(seatingPlan, i, j)
+        occupiedSeats++
+      end if
+    end for
+  end for
+  return occupiedSeats
+end function

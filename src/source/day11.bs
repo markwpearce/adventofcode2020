@@ -1,0 +1,52 @@
+data = getData()
+
+seatingPlan = getSeatingPlan(data.input)
+
+
+vlogSeatingPlan(seatingPlan)
+
+function runRulesGetCount(seatingPlan) as integer
+  changes = 1
+  runs = 0
+  currentPassengers = 0
+  while changes > 0
+
+    changes = 0
+    currentPassengers = 0
+    newSeatingPlan = []
+    for i = 0 to seatingPlan.count() - 1
+      newRow = []
+      for j = 0 to seatingPlan[i].count() - 1
+        if isSeat(seatingPlan, i, j)
+          ' vlog(["Checking seat", i, j, seatingPlan[i][j]])
+          emptySeat = isSeatEmpty(seatingPlan, i, j)
+          occAdj = getOccupiedSeatsAdjacent(seatingPlan, i, j)
+          if emptySeat and occAdj = 0
+            newRow.push("#")
+            currentPassengers++
+            changes++
+          else if not emptySeat and occAdj >= 4
+            newRow.push("L")
+            changes++
+          else
+            newRow.push(seatingPlan[i][j])
+            if not emptySeat
+              currentPassengers++
+            end if
+          end if
+        else
+          newRow.push(".")
+        end if
+      end for
+      newSeatingPlan.push(newRow)
+    end for
+    runs++
+    vlog(["Run:", runs, "Changes:", changes, "Passengers:", currentPassengers])
+    seatingPlan = newSeatingPlan
+    vlogSeatingPlan(seatingPlan)
+  end while
+  return currentPassengers
+end function
+
+
+?runRulesGetCount(seatingPlan)
