@@ -64,3 +64,42 @@ function getOccupiedSeatsAdjacent(seatingPlan, row as integer, col as integer) a
   end for
   return occupiedSeats
 end function
+
+function getOccupiedSeatsBySight(seatingPlan, row as integer, col as integer) as integer
+  seatingPlanRows = seatingPlan.Count() - 1
+  seatingPlanCols = seatingPlan[0].Count() - 1
+  directions = [-1, 0, 1]
+  occupiedSeats = 0
+
+  for rl = 0 to directions.count() - 1
+    for cl = 0 to directions.count() - 1
+      lookRow = directions[rl]
+      lookCol = directions[cl]
+      if not (lookRow = 0 and lookCol = 0)
+
+        placeCol = col
+        placeRow = row
+        sawOccupied = false
+        sawEmpty = false
+        placeCol += lookCol
+        placeRow += lookRow
+        while(not sawOccupied and not sawEmpty and placeRow >= 0 and placeRow <= seatingPlanRows and placeCol >= 0 and placeCol <= seatingPlanCols)
+          if isSeatOccupied(seatingPlan, placeRow, placeCol)
+            sawOccupied = true
+          else if isSeatEmpty(seatingPlan, placeRow, placeCol)
+            sawEmpty = true
+          end if
+
+          placeCol += lookCol
+          placeRow += lookRow
+
+        end while
+        if sawOccupied
+          occupiedSeats++
+        end if
+      end if
+    end for
+  end for
+
+  return occupiedSeats
+end function
