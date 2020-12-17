@@ -311,3 +311,13 @@ function sortArrayOfInts(lines)
   return stringArrayToIntegers(lines)
 
 end function
+
+
+function inArray(value, array) as boolean
+  for each item in array
+    if item = value
+      return true
+    end if
+  end for
+  return false
+end function

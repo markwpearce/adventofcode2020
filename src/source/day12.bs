@@ -1,0 +1,12 @@
+data = getData()
+
+actions = getFerryActions(data.input)
+
+ferry = new Ferry()
+vlog(["Start", ferry])
+for each action in actions
+  ferry.doAction(action)
+  vlog(ferry)
+end for
+
+? abs(ferry.x) + abs(ferry.y)

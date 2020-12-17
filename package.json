@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/markwpearce/adventofcode2020#readme",
   "dependencies": {
-    "brighterscript": "^0.22.0",
+    "brighterscript": "^0.22.1",
     "brs": "^0.39.0",
     "commander": "^6.2.0"
   }

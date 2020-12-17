@@ -1,0 +1,174 @@
+class FerryAction
+  action as string
+  units as integer
+
+  sub new (action, units)
+    m.action = action
+    m.units = units
+  end sub
+
+  function toStr() as string
+    return `FerryAction <action: ${m.action}, units: ${m.units}>`
+  end function
+end class
+
+
+function getFerryActions(lines) as object
+  ferryActions = []
+  for each line in lines
+    action = line.left(1)
+    units = line.mid(1).toInt()
+    ferryActions.push(new FerryAction(action, units))
+  end for
+  return ferryActions
+end function
+
+class Waypoint
+  x = 0
+  y = 0
+
+  sub new()
+    m.x = 10
+    m.y = 1
+
+  end sub
+
+  function toStr() as string
+    return `Waypoint <x: ${m.x}, y: ${m.y}>`
+  end function
+
+  function doAction(action) as boolean
+    vlog(["Performing action", action])
+    name = action.action
+    handled = false
+    if inArray(name, ["N", "E", "W", "S"])
+      m.move(name, action.units)
+      handled = true
+    end if
+    return handled
+  end function
+
+
+  private sub move(direction, distance)
+    vlog(["Moving", direction, distance])
+    if direction = "N"
+      m.y += distance
+    else if direction = "S"
+      m.y -= distance
+    else if direction = "E"
+      m.x += distance
+    else if direction = "W"
+      m.x -= distance
+    end if
+  end sub
+
+  private sub turn(direction, degrees)
+    vlog(["Turning", direction, degrees])
+    if direction = "L"
+      m.direction += degrees
+    else if direction = "R"
+      m.direction -= degrees
+    end if
+
+    m.direction = (m.direction + 360) mod 360
+  end sub
+end class
+
+class Ferry extends Waypoint
+  direction = 0 ' ccw degrees from east
+
+  sub new()
+    super()
+    m.x = 0
+    m.y = 0
+  end sub
+
+
+  override function toStr() as string
+    return `Ferry <x: ${m.x}, y: ${m.y}, direction: ${m.direction}>`
+  end function
+
+
+  override function doAction(action) as boolean
+    handled = super.doAction(action)
+    if not handled
+      if inArray(action.action, ["L", "R"])
+        m.turn(name, action.units)
+        handled = true
+      else if action.action = "F"
+        m.move(m.getCurrentCardinalDirection(), action.units)
+        handled = true
+      end if
+    end if
+    return handled
+  end function
+
+  private function getCurrentCardinalDirection()
+    directions = ["E", "N", "W", "S"]
+    return directions[cint(m.direction / 90) mod 4]
+  end function
+end class
+
+
+
+class WaypointFerry extends Ferry
+
+  sub new(wp)
+    super()
+    m.waypoint = wp
+  end sub
+
+
+  override function toStr() as string
+    return `WaypointFerry <x: ${m.x}, y: ${m.y}, waypoint: ${m.waypoint.toStr()}>`
+  end function
+
+
+  override function doAction(action) as boolean
+    handled = m.waypoint.doAction(action)
+
+    if not handled
+      if inArray(action.action, ["L", "R"])
+        vlog("hello")
+        m.turnWaypoint(action.action, action.units)
+        handled = true
+      else if action.action = "F"
+        m.moveToWaypoint(action.units)
+        handled = true
+      end if
+    end if
+    return handled
+  end function
+
+  private sub turnWaypoint(direction, degrees)
+
+
+    if direction = "R"
+      degrees = 360 - degrees
+    end if
+
+    degrees = ((degrees + 360) mod 360)
+    vlog(["Turning Waypoint", degrees])
+    oldX = m.waypoint.x
+    oldY = m.waypoint.y
+    if 90 = degrees
+      m.waypoint.x = - oldY
+      m.waypoint.y = oldX
+    else if 180 = degrees
+      m.waypoint.x = - oldX
+      m.waypoint.y = - oldY
+    else if 270 = degrees
+      m.waypoint.x = oldY
+      m.waypoint.y = - oldX
+    end if
+
+  end sub
+
+
+  private sub moveToWaypoint(distance)
+    vlog(["Move To Waypoint", m.waypoint.x, m.waypoint.y, distance])
+    m.x += m.waypoint.x * distance
+    m.y += m.waypoint.y * distance
+  end sub
+end class
+

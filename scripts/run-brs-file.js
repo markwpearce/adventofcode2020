@@ -96,6 +96,10 @@ function runPuzzle(hasInput) {
   if (fs.existsSync(dayUtilFile)) {
     files.push(dayUtilFile)
   }
+  const dayUtilFileNoDot = `./dist/source/${dayPrefix}_util.brs`
+  if (fs.existsSync(dayUtilFileNoDot)) {
+    files.push(dayUtilFileNoDot)
+  }
   files.push(`./dist/source/${program.puzzle}.brs`)
 
   const brsCommandLine = `./node_modules/.bin/brs ` + files.join(" ");

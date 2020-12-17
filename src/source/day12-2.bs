@@ -1,0 +1,13 @@
+data = getData()
+
+actions = getFerryActions(data.input)
+wp = new Waypoint()
+ferry = new WaypointFerry(wp)
+vlog(["Start", ferry])
+for each action in actions
+  ferry.doAction(action)
+
+  vlog(ferry)
+end for
+
+? abs(ferry.x) + abs(ferry.y)
